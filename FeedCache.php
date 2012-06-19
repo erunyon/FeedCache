@@ -2,11 +2,10 @@
 /**
  * Cache remote feeds to improve speed and reliability
  * Author: Erik Runyon
- * Updated: 2012-04-25
+ * Updated: 2012-06-08
  */
 
 class FeedCache {
-  define('ROOT', $_SERVER['DOCUMENT_ROOT']);
   private $local;
   private $remote;
   private $valid_for;
@@ -33,7 +32,9 @@ class FeedCache {
    * 3. If that fails, use the local even if its expired so we at least have something
    */
   private function populate_data() {
-    if( ($this->is_local && !$this->is_expired) || $this->cache_feed() || $this->is_local) {
+    if( $this->is_local && !$this->is_expired ) {
+      return file_get_contents($this->local);
+    } else if( $this->cache_feed() || $this->is_local ) {
       return file_get_contents($this->local);
     }
   }
@@ -82,7 +83,7 @@ class FeedCache {
   private function remote_file_exists($url) {
     $ret = false;
     $ch = curl_init($url);
-  
+
     curl_setopt($ch, CURLOPT_NOBODY, true); // check the connection; return no content
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1); // timeout after 1 second
     curl_setopt($ch, CURLOPT_TIMEOUT, 2); // The maximum number of seconds to allow cURL functions to execute.
@@ -90,7 +91,7 @@ class FeedCache {
 
     // do request
     $result = curl_exec($ch);
-    
+
     // if request is successful
     if ($result === true) {
       $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -99,7 +100,7 @@ class FeedCache {
       }
     }
     curl_close($ch);
-    
+
     return $ret;
   }
 
