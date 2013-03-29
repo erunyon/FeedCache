@@ -72,7 +72,7 @@ class FeedCache {
   private function check_expired() {
     if($this->is_local === true) {
       $valid_until = filemtime($this->local) + $this->valid_for;
-      return $valid_until < mktime();
+      return $valid_until < time();
     }
     return true;
   }
