@@ -24,7 +24,8 @@ The local filename is hashed string, which represents remote URI, you can specif
 
 Changelog
 ---------
-
+* v1.1 (2013-04-26)
+** UPDATE: Pass onle name of remote feed, the script will store hash of it's name as filename of local cache file.
 * v1 (2012-04-26)
 ** ADD: Initial commit
 
