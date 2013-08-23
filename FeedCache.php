@@ -13,8 +13,12 @@ class FeedCache {
   private $is_local;
   private $data = false;
 
-  public function __construct($local, $remote, $valid_for=3600) {
-    $this->local = ROOT.'cache/'.$local;
+  public function __construct($local, $remote, $valid_for=3600, $custom_local = false) {
+    if($custom_local){
+      $this->local = $local;
+    }else{
+      $this->local = ROOT.'cache/'.$local;
+    }
     $this->remote = $remote;
     $this->valid_for = $valid_for;
     $this->is_local = $this->check_local();
