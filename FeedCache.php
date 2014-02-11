@@ -14,7 +14,7 @@ class FeedCache {
   private $data = false;
 
   public function __construct($local, $remote, $valid_for=3600) {
-    $this->local = ROOT.'cache/'.$local;
+    $this->local = $_SERVER['DOCUMENT_ROOT'] . '/cache/' . $local;
     $this->remote = $remote;
     $this->valid_for = $valid_for;
     $this->is_local = $this->check_local();
