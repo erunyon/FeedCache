@@ -8,5 +8,8 @@
             "email": "silas@level2d.com"
         }
     ],
+    "autoload": {
+        "classmap": ["FeedCache.php"]
+    },
     "require": {}
 }
