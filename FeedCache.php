@@ -3,6 +3,10 @@
  * Cache remote feeds to improve speed and reliability
  * Author: Erik Runyon
  * Updated: 2012-06-08
+ *
+ * Patched by Silas Tippens @ 6/27/2017
+ * Makes only one request to prevent being rate-limited
+ * And will keep a log of all the remote requests it makes 
  */
 
 class FeedCache {
@@ -13,7 +17,9 @@ class FeedCache {
   private $is_local;
   private $data = false;
 
-  public function __construct($local, $remote, $valid_for=3600) {
+  // 1 hour = 3600
+  // 12 hours = 43200
+  public function __construct($local, $remote, $valid_for=43200) {
     $this->local = $_SERVER['DOCUMENT_ROOT'] . '/cache/' . $local;
     $this->remote = $remote;
     $this->valid_for = $valid_for;
@@ -53,16 +59,20 @@ class FeedCache {
    * If remote file exists, get the data and write it to the local cache folder
    */
   private function cache_feed() {
-    if($this->remote_file_exists($this->remote)) {
+    // if($this->remote_file_exists($this->remote)) {
       $compressed_content = '';
       $remote_content = file_get_contents($this->remote);
+      if ($remote_content === FALSE) {
+        echo $http_response_header[0];
+        return false;
+      }
+
       $compressed_content = preg_replace('/\s*?\n\s*/', "\n", $remote_content);
       $compressed_content = preg_replace('/( |\t)( |\t)*/', " ", $compressed_content);
       file_put_contents($this->local, $compressed_content);
+      $log = "[" . date('Y/m/d H:i:s', time()) . "] Accessed remote RSS feed. Will keep cached until: " . date('Y/m/d H:i:s', (filemtime($this->local) + $this->valid_for));
+      file_put_contents($this->local . '.log', $log, FILE_APPEND);
       return true;
-    } else {
-      return false;
-    }
   }
 
   private function check_local() {
@@ -106,3 +116,4 @@ class FeedCache {
 
 }
 ?>
+
