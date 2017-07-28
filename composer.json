@@ -1,11 +1,11 @@
 {
-    "name": "silas/feed-cache",
+    "name": "erunyon/feed-cache",
     "description": "Cache remote feeds to improve speed and reliability",
     "type": "library",
     "authors": [
         {
-            "name": "Silas",
-            "email": "silas@level2d.com"
+            "name": "Erik Runyon",
+            "email": "dev@erikrunyon.com"
         }
     ],
     "autoload": {

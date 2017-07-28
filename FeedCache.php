@@ -3,10 +3,6 @@
  * Cache remote feeds to improve speed and reliability
  * Author: Erik Runyon
  * Updated: 2012-06-08
- *
- * Patched by Silas Tippens @ 6/27/2017
- * Makes only one request to prevent being rate-limited
- * And will keep a log of all the remote requests it makes 
  */
 
 class FeedCache {
@@ -59,7 +55,6 @@ class FeedCache {
    * If remote file exists, get the data and write it to the local cache folder
    */
   private function cache_feed() {
-    // if($this->remote_file_exists($this->remote)) {
       $compressed_content = '';
       $remote_content = file_get_contents($this->remote);
       if ($remote_content === FALSE) {
