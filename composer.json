@@ -1,0 +1,15 @@
+{
+    "name": "erunyon/feed-cache",
+    "description": "Cache remote feeds to improve speed and reliability",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Erik Runyon",
+            "email": "dev@erikrunyon.com"
+        }
+    ],
+    "autoload": {
+        "classmap": ["FeedCache.php"]
+    },
+    "require": {}
+}
